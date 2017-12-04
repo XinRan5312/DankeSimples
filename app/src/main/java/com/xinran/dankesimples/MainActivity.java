@@ -10,7 +10,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
+import com.xinran.dankesimples.baidu.LocationManager;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -26,6 +31,11 @@ public class MainActivity extends AppCompatActivity {
     private RecylerViewAdpter mAdapter;
     private List<String> mDatas;
     private TextView mContentView;
+    private TextView mLituAndLong;
+
+    private TextView mAddress;
+    private TextView mDecription;
+    private TextView mPoi;
 
 
     @Override
@@ -44,6 +54,25 @@ public class MainActivity extends AppCompatActivity {
         mContentView= (TextView) findViewById(R.id.content_text);
         mContentView.setText("DeviceInfon:"+getDeviceInfo(this));
         Log.e("DeviceInfon:",getDeviceInfo(this));
+        mContentView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocationManager.newInstance().setLocationListener(new BDAbstractLocationListener() {
+                    @Override
+                    public void onReceiveLocation(BDLocation bdLocation) {
+
+                        mLituAndLong.setText("维度："+bdLocation.getLatitude()+"经度："+bdLocation.getLongitude());
+
+
+
+
+
+                    }
+                }).startLocation();
+
+
+            }
+        });
     }
 
     private void initDatas() {
